@@ -3,8 +3,6 @@ import MFRC522
 import signal
 from mfrc522 import SimpleMFRC522
 
-reader = SimpleMFRC522()
-
 continue_reading =True
 
 
@@ -16,13 +14,17 @@ def end_read(signal, frame):
     
 signal.signal(signal.SIGINT, end_read)
 # create the reader object
+MIFAREReader = MFRC522.MFRC522()
+reader = SimpleMFRC522()
 
-def readRFID():
-            print("Hold a tag near the reader")
-            id, text = reader.read()
-            print("ID: %s\nText: %s" % (id,text))
-            print()
-            
+def griteRegistro():
+    print("==================\n Agregar registro\n==================\n")
+    nombres = input('Ingrese su(s) nombre(s):\n')
+    apellidos = input('Inrgese sus apellidos:\n')
+    print("Now place your tag to write")
+    text = nombres + '$' + apellidos
+    reader.write(text)
+    print("Written")
 menu = "Menú de opciones\n\t1. Leer registros.\n\t2. Agregar registro.\n\t3. Eliminar registro.\n\t4. Terminar.\nIngrese la opción que desea ejecutar (ej: 4)\n"
 
 def showTerminal():
@@ -31,6 +33,8 @@ def showTerminal():
         if option == "1":
             print("Leyendo registro")
             readRFID()
+        elif option == "2":
+            griteRegistro()
         else:
             print("Opción no válida.")
 showTerminal()
